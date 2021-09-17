@@ -1,5 +1,9 @@
-letters = input()
-
+try:
+    letters = input()
+except EOFError:
+    letters = ""
+except:
+    print("invalid argumenet")
 output_string = ""
 outputs = []
 
