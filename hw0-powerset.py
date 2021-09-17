@@ -9,7 +9,7 @@ except:
 
 strings = set.split(" ")
     
-element_arr = [{""}]
+element_arr = []
 
 for i in range (1, len(strings) + 1):
     for element in combinations(strings, i):
