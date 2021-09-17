@@ -1,5 +1,5 @@
-#setup:
-#	apt-get install -y python3
+setup:
+	apt-get install -y python3
 
 run-hw0-stdio:
 	python3 hw0-stdio.py
