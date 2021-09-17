@@ -3,7 +3,7 @@ from itertools import combinations
 try:
     set = input()
 except EOFError:
-    set = ""
+    print("")
 except:
     print("invalid input")
     
