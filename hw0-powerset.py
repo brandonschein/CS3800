@@ -3,17 +3,17 @@ from itertools import combinations
 try:
     set = input()
 except EOFError:
-    print("")
+    set = ""
 except:
     print("invalid input")
-    
+
 strings = set.split(" ")
+    
+element_arr = [{""}]
 
-for i in range (0, len(strings) + 1):
+for i in range (1, len(strings) + 1):
     for element in combinations(strings, i):
-        print(" ".join(element))
+        element_arr.append(element)
 
-
-
-
-
+for x in range (0, len(element_arr)):
+    print(" ".join(element_arr[x]))
