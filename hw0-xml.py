@@ -1,15 +1,20 @@
+#importing a library to parse the xml file
 import xml.etree.cElementTree as ET
 
+#getting the xmlfile as input
 xmlfile = input()
 
+#instaniating up what will be returned
 state_names = []
 start_state = ""
 accept_states = []
 
+#open the file
 with open(xmlfile, "r") as file:
     tree = ET.parse(file)
     root = tree.getroot()
-
+    
+    #if the initial root tag is not automaton, find it
     if(root.tag != "automaton"):
         tag_list = list(root.getchildren())
         pos = 0
@@ -22,8 +27,9 @@ with open(xmlfile, "r") as file:
             pos += 1
     
 
+    # go through and find all the state tags and add them to the variables
+    # according to the task
     for child in root:
-
         if(child.tag == "state"):
             for ch in child:
                 if(ch.tag == "initial"):
@@ -33,7 +39,7 @@ with open(xmlfile, "r") as file:
             state_names.append(child.attrib['name'])
     
 
-    
+    #print the information
     print(" ".join(state_names))
     print(start_state)
     print(" ".join(accept_states))
