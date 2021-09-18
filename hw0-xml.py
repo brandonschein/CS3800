@@ -1,12 +1,5 @@
 import xml.etree.cElementTree as ET
 
-def find_state_child(root):
-    for child in root:
-        if(child.tag == "automaton"):
-            return(child)
-        else:
-            find_state_child(child) 
-
 xmlfile = input()
 
 state_names = []
@@ -16,11 +9,21 @@ accept_states = []
 with open(xmlfile, "r") as file:
     tree = ET.parse(file)
     root = tree.getroot()
- 
+
     if(root.tag != "automaton"):
-        root = find_state_child(root)          
+        tag_list = list(root.getchildren())
+        pos = 0
+        while True:
+            if(tag_list[pos].tag == "automaton"):
+                root = tag_list[pos]
+                break
+            else:
+                tag_list + list(root.getchildren())
+            pos += 1
+    
 
     for child in root:
+
         if(child.tag == "state"):
             for ch in child:
                 if(ch.tag == "initial"):
