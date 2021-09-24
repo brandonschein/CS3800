@@ -14,11 +14,11 @@ except EOFError:
     print("Invalid input")
 
 #sets up the elements used to create a DFA
-states = ["q1", "q2"]
+states = ["q1", "q2", "q3"]
 alphabet = ["0", "1"]
-delta = [["q1", "0", "q1"], ["q1", "1", "q2"], ["q2", "0", "q2"], ["q2", "1", "q1"]]
+delta = [["q1", "0", "q1"], ["q1", "1", "q2"], ["q2", "0", "q3"], ["q2", "1", "q2"], ["q3", "0", "q2"], ["q3", "1", "q2"]]
 start_state = "q1"
-accept_states = ["q1"]
+accept_states = ["q2"]
 
 #creates the DFA to use as an example in testing 
 testDFA = DFA(states, alphabet, delta, start_state, accept_states)
