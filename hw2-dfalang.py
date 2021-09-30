@@ -118,7 +118,10 @@ with open(xmlfile, "r") as file:
     
     works = []
 
-    for x in recursive_string(5, xmlDFA.alphabet):
+    test_list = recursive_string(5, xmlDFA.alphabet)
+    test_list.append("")
+    
+    for x in test_list:
         if(run(xmlDFA, x) == "accept"):
             works.append(x)
     
