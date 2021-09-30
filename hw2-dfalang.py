@@ -1,5 +1,6 @@
 import xml.etree.cElementTree as ET
 from itertools import combinations
+import sys
 
 class DFA:
     def __init__(self, states, alphabet, transitions, start, accepts):
@@ -53,7 +54,7 @@ def recursive_string(length, symbols):
     else:
         return recursive_helper(length, symbols) + recursive_string(length - 1, symbols)
 
-xmlfile = input()
+xmlfile = sys.stdin.read()
 
 state_names = []
 start_state = ""
