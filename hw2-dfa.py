@@ -1,3 +1,5 @@
+import sys
+
 class DFA:
     def __init__(self, states, alphabet, transitions, start, accepts):
         self.states = states
@@ -33,9 +35,10 @@ def run(dfa, str_input):
 
 #get the input 
 try:
-    input_string = input()
+    input_string = sys.stdin.read()
 except EOFError:
     print("Invalid input")
+
 
 #sets up the elements used to create a DFA
 states = ["q1", "q2", "q3"]
