@@ -1,4 +1,5 @@
 import xml.etree.cElementTree as ET
+import sys
 
 class DFA:
     def __init__(self, states, alphabet, transitions, start, accepts):
@@ -38,4 +39,4 @@ for i in xmlDFA.transitions:
     ET.SubElement(cur_transition, "read").text = i[1]
 
 tree = ET.ElementTree(root)
-tree.write("threeDFA.xml")
+tree.write(sys.stdout, encoding="unicode")
