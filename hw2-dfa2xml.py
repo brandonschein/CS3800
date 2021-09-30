@@ -20,8 +20,12 @@ xmlDFA = DFA(DFA_states, DFA_alphabet, DFA_transitions, DFA_start, DFA_accepts)
 
 automaton = ET.Element("automaton")
 
+swap_arr = []
 for i in range(0, len(xmlDFA.states)):
     cur_state = ET.SubElement(automaton, "state", id=str(i), name=xmlDFA.states[i])
+    swap_arr.append(str(i))
+    swap_arr.append(xmlDFA.states[i])
+
     if(xmlDFA.states[i] == xmlDFA.start):
         ET.SubElement(cur_state, "initial")
     if(xmlDFA.states[i] in xmlDFA.accepts):
@@ -29,8 +33,8 @@ for i in range(0, len(xmlDFA.states)):
 
 for i in xmlDFA.transitions:
     cur_transition = ET.SubElement(automaton, "transition")
-    ET.SubElement(cur_transition, "from").text = i[0]
-    ET.SubElement(cur_transition, "to").text = i[2]
+    ET.SubElement(cur_transition, "from").text = swap_arr[swap_arr.index(i[0]) - 1]
+    ET.SubElement(cur_transition, "to").text = swap_arr[swap_arr.index(i[2]) - 1]
     ET.SubElement(cur_transition, "read").text = i[1]
 
 tree = ET.ElementTree(automaton)
