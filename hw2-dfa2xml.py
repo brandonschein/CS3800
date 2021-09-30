@@ -18,11 +18,11 @@ DFA_accepts = ["q3"]
 xmlDFA = DFA(DFA_states, DFA_alphabet, DFA_transitions, DFA_start, DFA_accepts)
 
 
-automaton = ET.Element("automaton")
+root = ET.Element("automaton")
 
 swap_arr = []
 for i in range(0, len(xmlDFA.states)):
-    cur_state = ET.SubElement(automaton, "state", id=str(i), name=xmlDFA.states[i])
+    cur_state = ET.SubElement(root, "state", id=str(i), name=xmlDFA.states[i])
     swap_arr.append(str(i))
     swap_arr.append(xmlDFA.states[i])
 
@@ -32,10 +32,10 @@ for i in range(0, len(xmlDFA.states)):
         ET.SubElement(cur_state, "final")
 
 for i in xmlDFA.transitions:
-    cur_transition = ET.SubElement(automaton, "transition")
+    cur_transition = ET.SubElement(root, "transition")
     ET.SubElement(cur_transition, "from").text = swap_arr[swap_arr.index(i[0]) - 1]
     ET.SubElement(cur_transition, "to").text = swap_arr[swap_arr.index(i[2]) - 1]
     ET.SubElement(cur_transition, "read").text = i[1]
 
-tree = ET.ElementTree(automaton)
+tree = ET.ElementTree(root)
 tree.write("threeDFA.xml")
