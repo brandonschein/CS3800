@@ -168,7 +168,6 @@ works = []
 test_list = recursive_string(5, xmlNFA.alphabet)
 test_list.append("")
 
-print(test_list)
 
 for x in test_list:
     if(run(xmlNFA, x) == "accept"):
