@@ -187,11 +187,11 @@ for i in nfa2_transitions:
 nfa_union_transitions.append(["new_start_state", None, "nfa1_" + nfa1_start_state])
 nfa_union_transitions.append(["new_start_state", None, "nfa2_" + nfa2_start_state])
 
-print(nfa_union_names)
-print(nfa_union_alphabet)
-print(nfa_union_transitions)
-print(nfa_union_start)
-print(nfa_union_accepts)
+#print(nfa_union_names)
+#print(nfa_union_alphabet)
+#print(nfa_union_transitions)
+#print(nfa_union_start)
+#print(nfa_union_accepts)
 
 nfaUnion = NFA(nfa_union_names, nfa_union_alphabet, nfa_union_transitions, nfa_union_start, nfa_union_accepts)
 
@@ -209,7 +209,7 @@ for i in range(0, len(nfaUnion.states)):
     if(nfaUnion.states[i] in nfaUnion.accepts):
         ET.SubElement(cur_state, "final")
 
-print(swap_arr)
+#print(swap_arr)
 for i in nfaUnion.transitions:
     cur_transition = ET.SubElement(root, "transition")
     ET.SubElement(cur_transition, "from").text = swap_arr[swap_arr.index(i[0]) - 1]
