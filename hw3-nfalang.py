@@ -9,21 +9,54 @@ class NFA:
         self.start = start
         self.accepts = accepts
 
-def get_transitions(cur_states, cur_symbol, transitions_list):
-    return_list = []
-    for x in cur_states:
-        for y in transitions_list:
-            if((y[0] == x and y[1] == cur_symbol) or (y[0] == x and y[1] == None)):
-                return_list.append(y[2])
+# def get_transitions(cur_states, cur_symbol, transitions_list):
+#     return_list = []
     
+#     for x in cur_states:
+#         temp_arr = []
+#         for y in transitions_list:
+#             if((y[0] == x and y[1] == cur_symbol) or (y[0] == x and y[1] == None)):
+#                 temp_arr.append(y[2])
+#         if(len(temp_arr) == 0):
+#             cur_states.remove(x)
+#         else:
+#             return_list += temp_arr
+    
+#     return return_list
+
+def get_none_transition(cur_state, transition_list):
+    return_list = []
+    
+    for i in transition_list:
+        if(i[0] == cur_state and i[1] == None):
+            return_list.append(i[2])
+            
     return return_list
+
+def get_transition(cur_state, symbol, transition_list):
+    return_list = []
+    
+    for i in transition_list:
+        if(i[0] == cur_state and i[1] == symbol):
+            return_list.append(i[2])
+            
+    return return_list
+    
+
 
 def run(nfa, input):
     current_state = [nfa.start]
     input_split = list(input)
-
+    current_state += get_none_transition(nfa.start, nfa.transitions)
     for cur_symbol in input_split: 
-        current_state += get_transitions(current_state, cur_symbol, nfa.transitions)
+        updated_states = []
+        for cur_state in current_state:
+            updated_states += get_transition(cur_state, cur_symbol, nfa.transitions)
+        for cur_state in updated_states:
+            updated_states += get_none_transition(cur_state, nfa.transitions)
+        current_state = updated_states
+        
+        
     
     accepted = False
     
@@ -125,8 +158,8 @@ with open(xmlfile, "r") as file:
 # print(nfa_transitions)
 # print(nfa_start_state)
 # print(nfa_accept_states)
-
-nfa_alphabet.remove(None)
+if(None in nfa_alphabet):
+    nfa_alphabet.remove(None)
 
 xmlNFA = NFA(nfa_state_names, nfa_alphabet, nfa_transitions, nfa_start_state, nfa_accept_states)
 
@@ -135,6 +168,7 @@ works = []
 test_list = recursive_string(5, xmlNFA.alphabet)
 test_list.append("")
 
+print(test_list)
 
 for x in test_list:
     if(run(xmlNFA, x) == "accept"):
@@ -144,3 +178,6 @@ for x in test_list:
 for y in works:
     print("".join(y))
     
+
+
+
