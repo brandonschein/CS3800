@@ -1,5 +1,5 @@
 import sys
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 
 
 class NFA:
@@ -147,6 +147,8 @@ nfa_union_transitions = []
 nfa_union_start = "new_start_state"
 nfa_union_accepts = []
 
+nfa_union_names.append("new_start_state")
+
 for i in nfa1_state_names:
     i = "nfa1_" + i
     nfa_union_names.append(i)
@@ -158,7 +160,7 @@ for i in nfa2_state_names:
 
 nfa_union_alphabet = nfa1_alphabet
 
-for i in nfa1_alphabet:
+for i in nfa2_alphabet:
     if(i not in nfa_union_alphabet):
         nfa_union_alphabet.append(i)
 
@@ -185,22 +187,21 @@ for i in nfa2_transitions:
 nfa_union_transitions.append(["new_start_state", None, "nfa1_" + nfa1_start_state])
 nfa_union_transitions.append(["new_start_state", None, "nfa2_" + nfa2_start_state])
 
-# print(nfa_union_names)
-# print(nfa_union_alphabet)
-# print(nfa_union_transitions)
-# print(nfa_union_start)
-# print(nfa_union_accepts)
+print(nfa_union_names)
+print(nfa_union_alphabet)
+print(nfa_union_transitions)
+print(nfa_union_start)
+print(nfa_union_accepts)
 
 nfaUnion = NFA(nfa_union_names, nfa_union_alphabet, nfa_union_transitions, nfa_union_start, nfa_union_accepts)
 
 root = ET.Element("automaton")
 
 swap_arr = []
-swap_arr.append(0)
-swap_arr.append("new_start_state")
+
 for i in range(0, len(nfaUnion.states)):
     cur_state = ET.SubElement(root, "state", id=str(i), name=nfaUnion.states[i])
-    swap_arr.append(str(i+1))
+    swap_arr.append(str(i))
     swap_arr.append(nfaUnion.states[i])
 
     if(nfaUnion.states[i] == nfaUnion.start):
@@ -216,4 +217,4 @@ for i in nfaUnion.transitions:
     ET.SubElement(cur_transition, "read").text = i[1]
 
 tree = ET.ElementTree(root)
-tree.write(sys.stdout, encoding="unicode")
+tree.write("output.xml")
