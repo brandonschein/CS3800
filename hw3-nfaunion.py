@@ -217,4 +217,4 @@ for i in nfaUnion.transitions:
     ET.SubElement(cur_transition, "read").text = i[1]
 
 tree = ET.ElementTree(root)
-tree.write("output.xml")
+tree.write(sys.stdout, encoding="unicode")
