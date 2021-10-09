@@ -75,7 +75,8 @@ with open(xmlfile, "r") as file:
         x[0] = identity_arr[identity_arr.index(x[0]) + 1]
         x[2] = identity_arr[identity_arr.index(x[2]) + 1]
 
-nfa_alphabet.remove(None)
+if(None in nfa_alphabet):
+    nfa_alphabet.remove(None)
 
 # print(nfa_state_names)
 # print(nfa_alphabet)
@@ -83,13 +84,16 @@ nfa_alphabet.remove(None)
 # print(nfa_start_state)
 # print(nfa_accept_states)
 
-dfa_state_names = []
+dfa_state_names = ["garbage_state"]
 dfa_start_state = ""
 dfa_accept_states = []
 dfa_transitions = []
 dfa_alphabet = []
 
 dfa_alphabet = nfa_alphabet
+
+for i in dfa_alphabet:
+    dfa_transitions.append(["garbage_state", i, "garbage_state"])
 
 def get_none_help(cur_state, transition_list, seen):
     if cur_state in seen:
@@ -147,6 +151,8 @@ for i in range (1, len(nfa_state_names) + 1):
             
             if len(temp_arr) > 0:
                 dfa_transitions.append([state_str, x, " ".join(temp_arr)])
+            else:
+                dfa_transitions.append([state_str, x, "garbage_state"])
 
 
         dfa_state_names.append(state_str)
