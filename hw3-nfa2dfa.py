@@ -1,4 +1,5 @@
-import sys 
+import sys
+from typing import NewType 
 import xml.etree.cElementTree as ET
 
 class DFA:
@@ -89,18 +90,68 @@ dfa_transitions = []
 dfa_alphabet = []
 
 dfa_alphabet = nfa_alphabet
-dfa_start_state = nfa_start_state
+
+def get_none_help(cur_state, transition_list, seen):
+    if cur_state in seen:
+        return []
+
+    return_list = []
+    
+    for i in transition_list:
+        seen.append(i[0])
+        if(i[0] == cur_state and i[1] == None):
+            return_list.append(i[2])
+            return_list += get_none_help(i[2], transition_list, seen)
+            
+    return return_list
+
+def get_none_transition(cur_state, transition_list):
+    return get_none_help(cur_state, transition_list, [])
+
+def get_transition(cur_state, symbol, transition_list):
+    return_list = []
+    
+    for i in transition_list:
+        if(i[0] == cur_state and i[1] == symbol):
+            return_list.append(i[2])
+            
+    return return_list
+
+from itertools import combinations
+
+temp_start_state = set([nfa_start_state] + get_none_transition(nfa_start_state, nfa_transitions))
+
+for i in range (1, len(nfa_state_names) + 1):
+    for element in combinations(nfa_state_names, i):
+        element = list(element)
+        element.sort()
+        state_str = " ".join(element)
+        if set(element) == temp_start_state:
+            dfa_start_state = state_str
+
+        for n in nfa_accept_states:
+            if(n in element):
+                dfa_accept_states.append(state_str)
+
+        for x in nfa_alphabet:
+            temp_arr = []
+            for y in element:
+                temp_arr += get_transition(y, x, nfa_transitions)
+                temp_arr += get_none_transition(y, nfa_transitions)
+            new_temp = []
+            for z in temp_arr:
+                new_temp += get_none_transition(z, nfa_transitions)
+            temp_arr += new_temp
+            temp_arr = list(set(temp_arr))
+            temp_arr.sort()
+            
+            if len(temp_arr) > 0:
+                dfa_transitions.append([state_str, x, " ".join(temp_arr)])
 
 
-for x in nfa_state_names:
-    for y in nfa_alphabet:
-        to_states = 
-
-
-
+        dfa_state_names.append(state_str)
 
 newDFA = DFA(dfa_state_names, dfa_alphabet, dfa_transitions, dfa_start_state, dfa_accept_states)
-
 
 root = ET.Element("automaton")
 
