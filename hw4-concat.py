@@ -169,7 +169,6 @@ nfa_union_accepts = nfa2_accept_states
 
 for x in nfa1_transitions:
     if(x[2] in nfa1_accept_states):
-        print("here")
         nfa1_transitions.append([x[2], None, nfa2_start_state])
 
 nfa_union_transitions = nfa1_transitions
