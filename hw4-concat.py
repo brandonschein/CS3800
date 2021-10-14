@@ -162,9 +162,10 @@ for i in nfa2.alphabet:
     if(i not in nfa_union_alphabet):
         nfa_union_alphabet.append(i)
 
-nfa_union_start = nfa1_start_state
+nfa_union_start = "nfa1_" + nfa1_start_state
 
-nfa_union_accepts = nfa2_accept_states
+for x in nfa2_accept_states:
+    nfa_union_accepts.append("nfa2_" + x)
 
 for i in nfa1_transitions:
     nfa_union_transitions.append(["nfa1_" + i[0], i[1], "nfa1_" + i[2]])
