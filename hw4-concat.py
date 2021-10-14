@@ -166,13 +166,15 @@ nfa_union_start = nfa1_start_state
 
 nfa_union_accepts = nfa2_accept_states
 
+for i in nfa1_transitions:
+    nfa_union_transitions.append(["nfa1_" + i[0], i[1], "nfa1_" + i[2]])
 
-for x in nfa1_transitions:
-    if(x[2] in nfa1_accept_states):
-        nfa1_transitions.append([x[2], None, nfa2_start_state])
+for y in nfa2_transitions:
+    nfa_union_transitions.append(["nfa2_" + y[0], y[1], "nfa2_" + y[2]])
 
-nfa_union_transitions = nfa1_transitions
-nfa_union_transitions += nfa2_transitions
+for x in nfa1_accept_states:
+    nfa_union_transitions.append(["nfa1_" + x, None, "nfa2_" + nfa2_start_state])
+
 
 # print(nfa_union_names)
 # print(nfa_union_alphabet)
