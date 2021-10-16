@@ -1,4 +1,5 @@
-raw_input = input()
+import sys 
+raw_input = sys.stdin.read()
 
 S1 = raw_input.split(" ")
 
