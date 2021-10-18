@@ -158,9 +158,10 @@ elif (runNum == 5):
     print_nfa(make_union(make_union(make_union(part1, part2), make_single_char_nfa(0)), make_single_char_nfa(1)))
 elif (runNum == 6):
     print_nfa(make_union(make_concat(make_single_char_nfa(0), make_single_char_kleene(1)), make_single_char_kleene(1)))
-# elif (runNum == 7):
-#     # TODO
-# elif (runNum == 8):
-#     # TODO
+elif (runNum == 7):
+    print_nfa(make_union(make_union(make_single_char_nfa(0), make_single_char_nfa(1)), make_union(make_single_char_nfa(0), make_single_char_nfa(1))))
+elif (runNum == 8):
+    sigma = make_union(make_single_char_nfa(0), make_single_char_nfa(1))
+    print_nfa(make_kleene(sigma))
 else:
    print("invalid")
