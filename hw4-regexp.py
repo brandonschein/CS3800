@@ -142,7 +142,7 @@ def print_nfa(nfa):
 runNum = int(runNum)
 
 if (runNum == 1):
-   print_nfa(make_concat(make_concat(make_single_char_kleene(0), make_single_char_nfa(1)), make_kleene(make_single_char_nfa(0))))
+   print_nfa(make_concat(make_concat(make_single_char_kleene(0), make_single_char_nfa(1)), make_single_char_kleene(0)))
 elif (runNum == 2):
     print_nfa(make_concat(make_concat(make_concat(make_concat(make_kleene(make_union(make_single_char_nfa(0), make_single_char_nfa(1))), make_single_char_nfa(0)), make_single_char_nfa(0)), make_single_char_nfa(1)), make_kleene(make_union(make_single_char_nfa(0), make_single_char_nfa(1)))))
 elif (runNum == 3):
