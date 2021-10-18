@@ -42,11 +42,12 @@ def make_kleene(nfa):
     kleene_accept = nfa.accepts
 
     kleene_states.append(nss)
+    kleene_accept.append(nss)
 
     kleene_transitions.append([nss, None, nfa.start])
 
     for i in nfa.accepts:
-        kleene_transitions.append([i, None, nss])
+        kleene_transitions.append([i, None, nfa.start])
 
     return NFA(kleene_states, kleene_alphabet, kleene_transitions, kleene_start, kleene_accept)
 
