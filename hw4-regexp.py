@@ -148,15 +148,19 @@ elif (runNum == 2):
     print_nfa(make_concat(make_concat(make_concat(make_concat(make_kleene(make_union(make_single_char_nfa(0), make_single_char_nfa(1))), make_single_char_nfa(0)), make_single_char_nfa(0)), make_single_char_nfa(1)), make_kleene(make_union(make_single_char_nfa(0), make_single_char_nfa(1)))))
 elif (runNum == 3):
     print_nfa(make_concat(make_single_char_kleene(1), make_kleene(make_concat(make_single_char_nfa(0), make_concat(make_single_char_nfa(1), make_single_char_kleene(1))))))
-# elif (runNum == 4):
-#     # TODO
-# elif (runNum == 5):
-#     # TODO
-# elif (runNum == 6):
-#     # TODO
+elif (runNum == 4):
+    sigma = make_union(make_single_char_nfa(0), make_single_char_nfa(1))
+    print_nfa(make_kleene(make_concat(make_concat(sigma, sigma), sigma)))
+elif (runNum == 5):
+    sigma = make_union(make_single_char_nfa(0), make_single_char_nfa(1))
+    part1 = make_concat(make_concat(make_single_char_nfa(0), make_kleene(sigma)), make_single_char_nfa(0))
+    part2 = make_concat(make_concat(make_single_char_nfa(1), make_kleene(sigma)), make_single_char_nfa(1))
+    print_nfa(make_union(make_union(make_union(part1, part2), make_single_char_nfa(0)), make_single_char_nfa(1)))
+elif (runNum == 6):
+    print_nfa(make_union(make_concat(make_single_char_nfa(0), make_single_char_kleene(1)), make_single_char_kleene(1)))
 # elif (runNum == 7):
 #     # TODO
 # elif (runNum == 8):
 #     # TODO
-# else:
-#    print("invalid")
+else:
+   print("invalid")
