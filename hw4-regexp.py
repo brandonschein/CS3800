@@ -114,7 +114,15 @@ def make_union(nfa1, nfa2):
         union_accepts.append("nfa2_" + i)
 
     return NFA(union_states, union_alphabet, union_transitions, union_start, union_accepts)
-    
+
+def epsilon_nfa():
+    epsilon_states = ["q0"]
+    epsilon_alphabet = []
+    epsilon_transition = [["q0", None, "q0"]]
+    epsilon_start = "q0"
+    epsilon_accepts = ["q0"]
+
+    return NFA(epsilon_states, epsilon_alphabet, epsilon_transition, epsilon_start, epsilon_accepts)   
 def null_nfa():
     null_states = ["q0"]
     null_alphabet = []
@@ -123,7 +131,7 @@ def null_nfa():
     null_accepts = []
 
     return NFA(null_states, null_alphabet, null_transitions, null_start, null_accepts)
-    
+
 def print_nfa(nfa):
     root = ET.Element("automaton")
 
@@ -168,8 +176,7 @@ elif (runNum == 5):
 elif (runNum == 6):
     print_nfa(make_union(make_concat(make_single_char_nfa(0), make_single_char_kleene(1)), make_single_char_kleene(1)))
 elif (runNum == 7):
-    print_nfa(make_concat(make_union(make_single_char_nfa(0), make_single_char_nfa(None)), make_union(make_single_char_nfa(1), make_single_char_nfa(None))))
-    # print_nfa(make_union(make_union(make_single_char_nfa(0), make_single_char_nfa(1)), make_union(make_single_char_nfa(0), make_single_char_nfa(1))))
+    print_nfa(make_concat(make_union(make_single_char_nfa(0), epsilon_nfa()), make_union(make_single_char_nfa(1), epsilon_nfa())))
 elif (runNum == 8):
     print_nfa(null_nfa())
 else:
