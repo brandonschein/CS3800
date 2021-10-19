@@ -112,12 +112,12 @@ nfa_flip_states.append(nss)
 nfa_flip_alphabet = nfa_alphabet
 
 for i in nfa_transitions:
-    nfa_flip_transitions.append(i[2], i[1], i[0])
+    nfa_flip_transitions.append([i[2], i[1], i[0]])
 
 nfa_flip_accepts.append(nfa_start_state)
 
 for i in nfa_accept_states:
-    nfa_flip_transitions.append(nss, None, i)
+    nfa_flip_transitions.append([nss, None, i])
 
 
 nfaFlip = NFA(nfa_flip_states, nfa_flip_alphabet, nfa_flip_transitions, nfa_flip_start, nfa_flip_accepts)
