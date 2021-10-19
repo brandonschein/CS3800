@@ -115,6 +115,15 @@ def make_union(nfa1, nfa2):
 
     return NFA(union_states, union_alphabet, union_transitions, union_start, union_accepts)
     
+def null_nfa():
+    null_states = ["q0"]
+    null_alphabet = []
+    null_transitions = []
+    null_start = "q0"
+    null_accepts = []
+
+    return NFA(null_states, null_alphabet, null_transitions, null_start, null_accepts)
+    
 def print_nfa(nfa):
     root = ET.Element("automaton")
 
@@ -159,9 +168,9 @@ elif (runNum == 5):
 elif (runNum == 6):
     print_nfa(make_union(make_concat(make_single_char_nfa(0), make_single_char_kleene(1)), make_single_char_kleene(1)))
 elif (runNum == 7):
-    print_nfa(make_union(make_union(make_single_char_nfa(0), make_single_char_nfa(1)), make_union(make_single_char_nfa(0), make_single_char_nfa(1))))
+    print_nfa(make_concat(make_union(make_single_char_nfa(0), make_single_char_nfa(None)), make_union(make_single_char_nfa(1), make_single_char_nfa(None))))
+    # print_nfa(make_union(make_union(make_single_char_nfa(0), make_single_char_nfa(1)), make_union(make_single_char_nfa(0), make_single_char_nfa(1))))
 elif (runNum == 8):
-    sigma = make_union(make_single_char_nfa(0), make_single_char_nfa(1))
-    print_nfa(make_kleene(sigma))
+    print_nfa(null_nfa())
 else:
    print("invalid")
