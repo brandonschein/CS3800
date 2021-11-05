@@ -1,6 +1,7 @@
+import itertools
 import sys
 import xml.etree.cElementTree as ET
-
+from itertools import combinations 
 
 class CFG:
     def __init__(self, variables, terminals, rules, start):
@@ -17,8 +18,9 @@ num = inputs[1]
 
 cfg_variables = []
 cfg_terminals = []
-cfg_rules = []
+cfg_rules = {}
 cfg_start = ""
+
 
 with open(file, "r") as file:
     tree = ET.parse(file)
@@ -41,71 +43,83 @@ with open(file, "r") as file:
             # do I need to do anything ? 
             
         if(child.tag == "production"):
-            temp_tuple = []
+            left_text = ""
             for ch in child:
+                
                 if(ch.tag == "left"):
-                    temp_tuple.append(ch.text)
+                    left_text = ch.text
+                    if(ch.text not in cfg_rules):
+                        cfg_rules[ch.text] = []
                 if(ch.tag == "right"):
-                    temp_tuple.append(ch.text)
-                    cfg_rules.append(temp_tuple)
+                    cfg_rules[left_text].append(ch.text)
 
-cfg_start = cfg_rules[0][0]
+
+cfg_start = list(cfg_rules.keys())[0]
+
 
 for i in cfg_rules:
-    if(i[0] not in cfg_variables):
-        cfg_variables.append(i[0])
-    for x in i[1]:
-        if (x not in cfg_terminals) and not (x.isupper()):
-            cfg_terminals.append(x)
+    if(i not in cfg_variables):
+        cfg_variables.append(i)
 
-print(cfg_variables)
-print(cfg_terminals)
-print(cfg_rules)
-print(cfg_start)
+for i in cfg_rules:
+    for x in cfg_rules[i]:
+        for y in x:
+            if(y not in cfg_terminals) and (y not in cfg_variables):
+                cfg_terminals.append(y)
+        
 
-print_array = []
-print_array.append(cfg_start)
-#preload print_array
+# print(cfg_variables)
+# print(cfg_terminals)
+# print(cfg_rules)
+# print(cfg_start)
 
-# for i in cfg_rules:
-#     if(i[0] == cfg_start):
-#         print_array.append(i[1])
+def run_helper(derivations_num, curr):
+    if(derivations_num == 0):
+        return []
+    rights = cfg_rules.get(curr)
 
+    derivations = []
 
-# def ruleAdvance(arr):
-#     new_arr = []
-#     for i in arr:
-#         temp_arr = []
-#         chars = i.split()
-#         for x in chars:
-#             if(x.isupper()):
-#                 for y in cfg_rules:
-#                     if(y[0] == x):
-#                         temp_arr.append(y[1])
-#             else:
-#                 temp_arr.append(x)
-#         new_arr += temp_arr
+    for right in rights:
+        substituted_rights = [[]]
+        for char in right:
+            if char in cfg_variables:
+                if derivations_num == 1:
+                    substituted_rights = []
+                    break
+                substitutions = run_helper(derivations_num - 1, char)
 
-#     return new_arr
+                if (len(substitutions) > 0):
+                    new_rights = []
+                    for substituted_right in substituted_rights:
+                        for sub in substitutions:
+                            new_right = substituted_right + sub
+                            new_rights.append(new_right)
+                    substituted_rights = new_rights
+                else:
+                    substituted_rights = []
+                    break
 
-def ruleAdvance(arr):
-    new_arr = []
-    for i in arr:
-        # design this to be recursive? 
-        for x in i:
-            temp_str = ""
-            if(x.isupper()):
-                for y in cfg_rules:
-                    if(y[0] == x):
-                        temp_str += y[1]
-            else:
-                temp_str += x
-        new_arr.append(temp_str)
-
-
-for i in range(0, int(num)):
-    # print_array += ruleAdvance(print_array)
-    print_array.append(ruleAdvance(print_array[len(print_array) - 1]))
-
+            else :
+                for substituted_right in substituted_rights:
+                    substituted_right.append(char)
+        derivations += substituted_rights
     
-print(print_array)
+    return derivations
+
+def run(derivations):
+    expand = run_helper(derivations, cfg_start)
+
+    return_list = []
+    for right in expand:
+        right_str = ""
+        for char in right:
+            right_str += char
+        return_list.append(right_str)
+    
+    return return_list
+
+final_terminals = run(int(num))
+for string in final_terminals:
+    print(string)
+
