@@ -106,6 +106,7 @@ for i in cfg_rules:
             if(y not in cfg_terminals) and (y not in cfg_variables):
                 cfg_terminals.append(y)
 
+# checks to see if the cfg was gotten correctly
 # print(cfg_variables)
 # print(cfg_terminals)
 # print(cfg_rules)
