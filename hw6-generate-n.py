@@ -1,8 +1,7 @@
-import itertools
 import sys
 import xml.etree.cElementTree as ET
-from itertools import combinations 
 
+# class for cfg, reference definition in readme for more info
 class CFG:
     def __init__(self, variables, terminals, rules, start):
        self.variables = variables
@@ -10,17 +9,16 @@ class CFG:
        self.rules = rules
        self.start = start
 
-
 inputs = sys.stdin.read().split()
 
 file = inputs[0]
 num = inputs[1]
 
+# load the cfg info from the file into these
 cfg_variables = []
 cfg_terminals = []
 cfg_rules = {}
 cfg_start = ""
-
 
 with open(file, "r") as file:
     tree = ET.parse(file)
@@ -56,7 +54,6 @@ with open(file, "r") as file:
 
 cfg_start = list(cfg_rules.keys())[0]
 
-
 for i in cfg_rules:
     if(i not in cfg_variables):
         cfg_variables.append(i)
@@ -67,43 +64,43 @@ for i in cfg_rules:
             if(y not in cfg_terminals) and (y not in cfg_variables):
                 cfg_terminals.append(y)
         
-
+# check to see if the cfg was gotten correctly
 # print(cfg_variables)
 # print(cfg_terminals)
 # print(cfg_rules)
 # print(cfg_start)
 
-def run_helper(derivations_num, curr):
-    if(derivations_num == 0):
+def run_helper(cur_derivation, curr):
+    # base case 
+    if(cur_derivation == 0):
         return []
-    rights = cfg_rules.get(curr)
+    rightSide = cfg_rules[curr]
 
     derivations = []
-
-    for right in rights:
-        substituted_rights = [[]]
+    for right in rightSide:
+        producedRights = [[]]
         for char in right:
-            if char in cfg_variables:
-                if derivations_num == 1:
-                    substituted_rights = []
+            if (char in cfg_variables):
+                if cur_derivation == 1:
+                    producedRights = []
                     break
-                substitutions = run_helper(derivations_num - 1, char)
+                substitutions = run_helper(cur_derivation - 1, char)
 
                 if (len(substitutions) > 0):
                     new_rights = []
-                    for substituted_right in substituted_rights:
+                    for substituted_right in producedRights:
                         for sub in substitutions:
                             new_right = substituted_right + sub
                             new_rights.append(new_right)
-                    substituted_rights = new_rights
+                    producedRights = new_rights
                 else:
-                    substituted_rights = []
+                    producedRights = []
                     break
 
             else :
-                for substituted_right in substituted_rights:
+                for substituted_right in producedRights:
                     substituted_right.append(char)
-        derivations += substituted_rights
+        derivations += producedRights
     
     return derivations
 
@@ -116,10 +113,8 @@ def run(derivations):
         for char in right:
             right_str += char
         return_list.append(right_str)
-    
     return return_list
 
 final_terminals = run(int(num))
 for string in final_terminals:
     print(string)
-
