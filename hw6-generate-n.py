@@ -66,10 +66,10 @@ for i in cfg_rules:
                     cfg_terminals.append(y)
         
 # check to see if the cfg was gotten correctly
-# print(cfg_variables)
-# print(cfg_terminals)
-# print(cfg_rules)
-# print(cfg_start)
+print(cfg_variables)
+print(cfg_terminals)
+print(cfg_rules)
+print(cfg_start)
 
 def run_helper(cur_derivation, curr):
     # base case 
