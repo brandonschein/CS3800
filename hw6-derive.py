@@ -80,7 +80,7 @@ def derive_helper(source, target, visited):
             new_variations = []
             for variation in variations:
                 for right in prods:
-                    if len(right) == 0:
+                    if right != None and len(right) == 0:
                         right = []
                     new_variations.append(variation + list(right))
             variations = new_variations
