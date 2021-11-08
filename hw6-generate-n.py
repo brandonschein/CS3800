@@ -60,9 +60,10 @@ for i in cfg_rules:
 
 for i in cfg_rules:
     for x in cfg_rules[i]:
-        for y in x:
-            if(y not in cfg_terminals) and (y not in cfg_variables):
-                cfg_terminals.append(y)
+        if(x):
+            for y in x:
+                if(y not in cfg_terminals) and (y not in cfg_variables):
+                    cfg_terminals.append(y)
         
 # check to see if the cfg was gotten correctly
 # print(cfg_variables)
