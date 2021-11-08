@@ -77,10 +77,8 @@ for i in cfg_rules:
 def generate_helper(cur_derivation, curr):
     if(cur_derivation == 0): return []
 
-    productions = cfg_rules[curr]
-
     derivations = []
-    for prod in productions:
+    for prod in cfg_rules[curr]:
         producedRights = [[]]
         if(prod):
             for char in prod:
@@ -95,8 +93,7 @@ def generate_helper(cur_derivation, curr):
                             new_rights = []
                             for substituted_right in producedRights:
                                 for sub in substitutions:
-                                    new_right = substituted_right + sub
-                                    new_rights.append(new_right)
+                                    new_rights.append(substituted_right + sub)
                             producedRights = new_rights
                         else:
                             producedRights = []     
@@ -121,6 +118,9 @@ def generate(derivations):
             visited.append(temp_str)
             return_list.append(temp_str)
     return return_list
+
+###################
+# main starts here 
 
 final_terminals = generate(int(num))
 for string in final_terminals:
