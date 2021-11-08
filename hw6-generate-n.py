@@ -107,12 +107,17 @@ def run_helper(cur_derivation, curr):
 def run(derivations):
     expand = run_helper(derivations, cfg_start)
 
+    visited = []
     return_list = []
     for right in expand:
+        if len(right) == 0:
+            pass
         right_str = ""
         for char in right:
             right_str += char
-        return_list.append(right_str)
+        if right_str not in visited:
+            visited.append(right_str)
+            return_list.append(right_str)
     return return_list
 
 final_terminals = run(int(num))
