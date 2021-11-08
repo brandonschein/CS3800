@@ -9,8 +9,10 @@ class CFG:
        self.rules = rules
        self.start = start
 
+# reading in input
 inputs = sys.stdin.read().split()
 
+# setting variables for split input
 file = inputs[0]
 num = inputs[1]
 
@@ -20,6 +22,7 @@ cfg_terminals = []
 cfg_rules = {}
 cfg_start = ""
 
+# open the file given and parse it for the cfg info
 with open(file, "r") as file:
     tree = ET.parse(file)
     root = tree.getroot()
@@ -51,7 +54,7 @@ with open(file, "r") as file:
                 if(ch.tag == "right"):
                     cfg_rules[left_text].append(ch.text)
 
-
+# using rules that we parsed, derive the rest of the cfg info
 cfg_start = list(cfg_rules.keys())[0]
 
 for i in cfg_rules:
@@ -71,34 +74,32 @@ for i in cfg_rules:
 # print(cfg_rules)
 # print(cfg_start)
 
-def run_helper(cur_derivation, curr):
-    # base case 
-    if(cur_derivation == 0):
-        return []
+def generate_helper(cur_derivation, curr):
+    if(cur_derivation == 0): return []
 
-    rightSide = cfg_rules[curr]
+    productions = cfg_rules[curr]
 
     derivations = []
-    for right in rightSide:
+    for prod in productions:
         producedRights = [[]]
-        if(right):
-            for char in right:
+        if(prod):
+            for char in prod:
                 if (char in cfg_variables):
                     if cur_derivation == 1:
                         producedRights = []
-                        break
-                    substitutions = run_helper(cur_derivation - 1, char)
-
-                    if (len(substitutions) > 0):
-                        new_rights = []
-                        for substituted_right in producedRights:
-                            for sub in substitutions:
-                                new_right = substituted_right + sub
-                                new_rights.append(new_right)
-                        producedRights = new_rights
+                        
                     else:
-                        producedRights = []
-                        break
+                        substitutions = generate_helper(cur_derivation - 1, char)
+
+                        if (len(substitutions) > 0):
+                            new_rights = []
+                            for substituted_right in producedRights:
+                                for sub in substitutions:
+                                    new_right = substituted_right + sub
+                                    new_rights.append(new_right)
+                            producedRights = new_rights
+                        else:
+                            producedRights = []     
 
                 else :
                     for substituted_right in producedRights:
@@ -107,22 +108,20 @@ def run_helper(cur_derivation, curr):
     
     return derivations
 
-def run(derivations):
-    expand = run_helper(derivations, cfg_start)
+def generate(derivations):
+    expand = generate_helper(derivations, cfg_start)
 
-    visited = list()
+    visited = []
     return_list = []
-    for right in expand:
-        if len(right) == 0:
-            pass
-        right_str = ""
-        for char in right:
-            right_str += char
-        if right_str not in visited:
-            visited.append(right_str)
-            return_list.append(right_str)
+    for str in expand:
+        temp_str = ""
+        for char in str:
+            temp_str += char
+        if temp_str not in visited:
+            visited.append(temp_str)
+            return_list.append(temp_str)
     return return_list
 
-final_terminals = run(int(num))
+final_terminals = generate(int(num))
 for string in final_terminals:
     print(string)
