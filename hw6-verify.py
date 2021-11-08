@@ -43,52 +43,36 @@ def parseCFG(file):
                 if(ch.tag == "right"):
                     cfg_rules[left_text].append(ch.text)
 
-def verify_helper(str, derv_seq):
-    if len(derv_seq) == 0:
+def verify(str, seq):
+    # base case
+    if len(seq) == 0:
         for char in str:
             if char in cfg_variables:
                 return False
         return True
+    
     derv = []
-    for char in derv_seq[0]:
+    for char in seq[0]:
         derv.append(char)
 
-    variations = [[]]
+    expansions = [[]]
     for char in str:
-
         if char in cfg_variables:
-            rights = cfg_rules.get(char)
-
-            if rights == None:
-                return False
-
-            new_variations = []
-            for variation in variations:
-                for right in rights:
-                    new_variations.append(variation + list(right))
+            new_expansions = []
+            for expansion in expansions:
+                for prod in cfg_rules[char]:
+                    new_expansions.append(expansion + list(prod))
+                expansion.append(char)
             
-            for variation in variations:
-                variation.append(char)
-            
-            variations += new_variations
+            expansions += new_expansions
         else:
-            for variation in variations:
-                variation.append(char)
-    if not (derv in variations):
+            for expansion in expansions:
+                expansion.append(char)
+    if (derv not in expansions):
         return False
 
-    return verify_helper(derv, derv_seq[1:])
+    return verify(derv, seq[1:])
 
-
-def verify(derv_seq):
-    start = derv_seq[0]
-    rights = cfg_rules.get(start)
-
-    if(rights == None):
-        return False
-    
-    else:
-        return verify_helper(start, derv_seq[1:])
 
 #########################################
 # main starts here
@@ -112,7 +96,7 @@ for i in cfg_rules:
 # print(cfg_rules)
 # print(cfg_start)
 
-if(verify(verify_arr)):
+if(verify(verify_arr[0], verify_arr[1:])):
     print("accept")
 else:
     print("reject")

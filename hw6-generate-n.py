@@ -9,8 +9,10 @@ class CFG:
        self.rules = rules
        self.start = start
 
+# reading in input
 inputs = sys.stdin.read().split()
 
+# setting variables for split input
 file = inputs[0]
 num = inputs[1]
 
@@ -20,6 +22,7 @@ cfg_terminals = []
 cfg_rules = {}
 cfg_start = ""
 
+# open the file given and parse it for the cfg info
 with open(file, "r") as file:
     tree = ET.parse(file)
     root = tree.getroot()
@@ -51,7 +54,7 @@ with open(file, "r") as file:
                 if(ch.tag == "right"):
                     cfg_rules[left_text].append(ch.text)
 
-
+# using rules that we parsed, derive the rest of the cfg info
 cfg_start = list(cfg_rules.keys())[0]
 
 for i in cfg_rules:
@@ -60,9 +63,10 @@ for i in cfg_rules:
 
 for i in cfg_rules:
     for x in cfg_rules[i]:
-        for y in x:
-            if(y not in cfg_terminals) and (y not in cfg_variables):
-                cfg_terminals.append(y)
+        if(x):
+            for y in x:
+                if(y not in cfg_terminals) and (y not in cfg_variables):
+                    cfg_terminals.append(y)
         
 # check to see if the cfg was gotten correctly
 # print(cfg_variables)
@@ -70,51 +74,54 @@ for i in cfg_rules:
 # print(cfg_rules)
 # print(cfg_start)
 
-def run_helper(cur_derivation, curr):
-    # base case 
-    if(cur_derivation == 0):
-        return []
-    rightSide = cfg_rules[curr]
+def generate_helper(cur_derivation, curr):
+    if(cur_derivation == 0): return []
 
     derivations = []
-    for right in rightSide:
+    for prod in cfg_rules[curr]:
         producedRights = [[]]
-        for char in right:
-            if (char in cfg_variables):
-                if cur_derivation == 1:
-                    producedRights = []
-                    break
-                substitutions = run_helper(cur_derivation - 1, char)
+        if(prod):
+            for char in prod:
+                if (char in cfg_variables):
+                    if cur_derivation == 1:
+                        producedRights = []
+                        
+                    else:
+                        substitutions = generate_helper(cur_derivation - 1, char)
 
-                if (len(substitutions) > 0):
-                    new_rights = []
+                        if (len(substitutions) > 0):
+                            new_rights = []
+                            for substituted_right in producedRights:
+                                for sub in substitutions:
+                                    new_rights.append(substituted_right + sub)
+                            producedRights = new_rights
+                        else:
+                            producedRights = []     
+
+                else :
                     for substituted_right in producedRights:
-                        for sub in substitutions:
-                            new_right = substituted_right + sub
-                            new_rights.append(new_right)
-                    producedRights = new_rights
-                else:
-                    producedRights = []
-                    break
-
-            else :
-                for substituted_right in producedRights:
-                    substituted_right.append(char)
+                        substituted_right.append(char)
         derivations += producedRights
     
     return derivations
 
-def run(derivations):
-    expand = run_helper(derivations, cfg_start)
+def generate(derivations):
+    expand = generate_helper(derivations, cfg_start)
 
+    visited = []
     return_list = []
-    for right in expand:
-        right_str = ""
-        for char in right:
-            right_str += char
-        return_list.append(right_str)
+    for str in expand:
+        temp_str = ""
+        for char in str:
+            temp_str += char
+        if temp_str not in visited:
+            visited.append(temp_str)
+            return_list.append(temp_str)
     return return_list
 
-final_terminals = run(int(num))
+###################
+# main starts here 
+
+final_terminals = generate(int(num))
 for string in final_terminals:
     print(string)
