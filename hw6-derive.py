@@ -128,10 +128,18 @@ thisCfg = CFG(cfg_terminals, cfg_variables, cfg_rules, cfg_start)
 # print(cfg_start)
 
 derivisions = derive(list(source), list(target))
-print(derivisions)
+
+final_derivisions = []
+temp_str = ""
+for i in derivisions:
+    if(len(i) == 1):
+        temp_str += i
+    else:
+        final_derivisions.append(i)
+final_derivisions.append(temp_str)
+
 if derivisions == None:
     print()
 else:
-    for string in derivisions:
+    for string in final_derivisions:
         print(string)
-
