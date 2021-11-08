@@ -81,26 +81,27 @@ def run_helper(cur_derivation, curr):
     for right in rightSide:
         producedRights = [[]]
         for char in right:
-            if (char in cfg_variables):
-                if cur_derivation == 1:
-                    producedRights = []
-                    break
-                substitutions = run_helper(cur_derivation - 1, char)
+            if(char):
+                if (char in cfg_variables):
+                    if cur_derivation == 1:
+                        producedRights = []
+                        break
+                    substitutions = run_helper(cur_derivation - 1, char)
 
-                if (len(substitutions) > 0):
-                    new_rights = []
+                    if (len(substitutions) > 0):
+                        new_rights = []
+                        for substituted_right in producedRights:
+                            for sub in substitutions:
+                                new_right = substituted_right + sub
+                                new_rights.append(new_right)
+                        producedRights = new_rights
+                    else:
+                        producedRights = []
+                        break
+
+                else :
                     for substituted_right in producedRights:
-                        for sub in substitutions:
-                            new_right = substituted_right + sub
-                            new_rights.append(new_right)
-                    producedRights = new_rights
-                else:
-                    producedRights = []
-                    break
-
-            else :
-                for substituted_right in producedRights:
-                    substituted_right.append(char)
+                        substituted_right.append(char)
         derivations += producedRights
     
     return derivations
