@@ -44,6 +44,7 @@ def parseCFG(file):
                     cfg_rules[left_text].append(ch.text)
 
 def verify(str, seq):
+    # base case
     if len(seq) == 0:
         for char in str:
             if char in cfg_variables:
@@ -57,20 +58,16 @@ def verify(str, seq):
     expansions = [[]]
     for char in str:
         if char in cfg_variables:
-            productions = cfg_rules[char]
-
             new_expansions = []
-            for variation in expansions:
-                for prod in productions:
-                    new_expansions.append(variation + list(prod))
-            
-            for variation in expansions:
-                variation.append(char)
+            for expansion in expansions:
+                for prod in cfg_rules[char]:
+                    new_expansions.append(expansion + list(prod))
+                expansion.append(char)
             
             expansions += new_expansions
         else:
-            for variation in expansions:
-                variation.append(char)
+            for expansion in expansions:
+                expansion.append(char)
     if (derv not in expansions):
         return False
 
