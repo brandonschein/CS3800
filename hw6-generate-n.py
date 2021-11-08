@@ -80,8 +80,8 @@ def run_helper(cur_derivation, curr):
     derivations = []
     for right in rightSide:
         producedRights = [[]]
-        for char in right:
-            if(char):
+        if(right):
+            for char in right:
                 if (char in cfg_variables):
                     if cur_derivation == 1:
                         producedRights = []
@@ -102,7 +102,7 @@ def run_helper(cur_derivation, curr):
                 else :
                     for substituted_right in producedRights:
                         substituted_right.append(char)
-        derivations += producedRights
+            derivations += producedRights
     
     return derivations
 
