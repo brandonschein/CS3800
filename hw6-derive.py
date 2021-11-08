@@ -48,8 +48,12 @@ def parseCFG(file):
 
 def derive(source, target):
     return_arr = []
-    for element in derive_helper(source, target, []):
-        return_arr.append(''.join(element))
+    output = derive_helper(source, target, [])
+
+    if(output):
+        for element in output:
+            return_arr.append(''.join(element))
+         
     if(len(return_arr) == 0):
         return None
     else:
@@ -131,17 +135,19 @@ thisCfg = CFG(cfg_terminals, cfg_variables, cfg_rules, cfg_start)
 
 derivisions = derive(list(source), list(target))
 
-final_derivisions = []
-temp_str = ""
-for i in derivisions:
-    if(len(i) == 1):
-        temp_str += i
-    else:
-        final_derivisions.append(i)
-final_derivisions.append(temp_str)
-
-if derivisions == None:
+if (derivisions == None):
     print()
 else:
+
+    final_derivisions = []
+
+    temp_str = ""
+    for i in derivisions:
+        if(len(i) == 1):
+            temp_str += i
+        else:
+            final_derivisions.append(i)
+    final_derivisions.append(temp_str)
+
     for string in final_derivisions:
         print(string)
