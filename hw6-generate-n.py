@@ -66,15 +66,16 @@ for i in cfg_rules:
                     cfg_terminals.append(y)
         
 # check to see if the cfg was gotten correctly
-print(cfg_variables)
-print(cfg_terminals)
-print(cfg_rules)
-print(cfg_start)
+# print(cfg_variables)
+# print(cfg_terminals)
+# print(cfg_rules)
+# print(cfg_start)
 
 def run_helper(cur_derivation, curr):
     # base case 
     if(cur_derivation == 0):
         return []
+
     rightSide = cfg_rules[curr]
 
     derivations = []
@@ -102,14 +103,14 @@ def run_helper(cur_derivation, curr):
                 else :
                     for substituted_right in producedRights:
                         substituted_right.append(char)
-            derivations += producedRights
+        derivations += producedRights
     
     return derivations
 
 def run(derivations):
     expand = run_helper(derivations, cfg_start)
 
-    visited = []
+    visited = list()
     return_list = []
     for right in expand:
         if len(right) == 0:
