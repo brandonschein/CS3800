@@ -62,10 +62,10 @@ def parse(filename):
         data = ET.parse(file)
         root = data.getroot()
 
-        start = None
+        start = ""
         varz = set()
         terms = list()
-        rules = dict()
+        rules = {}
 
         # go through rules
         all_chars = set()
@@ -85,7 +85,7 @@ def parse(filename):
             left = rule.find('left').text
             right = rule.find('right').text
 
-            if start == None:
+            if start == "":
                 start = left
 
             varz.add(left)
