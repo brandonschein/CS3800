@@ -116,8 +116,8 @@ file, source, target = str(data).split("\n")[:-1]
 
 cfg = parse(file)
 
-# print(cfg.vars)
-# print(cfg.terms)
+# print(cfg.variables)
+# print(cfg.terminals)
 # print(cfg.rules)
 # print(cfg.start)
 
