@@ -1,7 +1,5 @@
+import xml.etree.ElementTree as ET
 import sys
-import xml.etree.cElementTree as ET
-
-#class for CFGs, refer to read me for definition
 class CFG:
     def __init__(self, variables, terminals, rules, start):
        self.variables = variables
@@ -9,145 +7,124 @@ class CFG:
        self.rules = rules
        self.start = start
 
-cfg_variables = []
-cfg_terminals = []
-cfg_rules = {}
-cfg_start = ""
+def derive(start, end):
+    ret = []
+    for el in derive_helper(start, list(end), []):
+        ret.append(''.join(el))
+    return [start] + ret
 
-def parseCFG(file):
-    with open(file, "r") as file:
-        tree = ET.parse(file)
-    root = tree.getroot()
-
-    if(root.tag != "structure"):
-        tag_list = list(root.getchildren())
-        pos = 0
-        while True:
-            if(tag_list[pos].tag == "structure"):
-                root = tag_list[pos]
-                break
-            else:
-                tag_list += list(root.getchildren())
-            pos += 1
-
-
-    for child in root:
-        #if(child.tag == "type"):
-            # do I need to do anything ? 
-            
-        if(child.tag == "production"):
-            left_text = ""
-            for ch in child:
-                
-                if(ch.tag == "left"):
-                    left_text = ch.text
-                    if(ch.text not in cfg_rules):
-                        cfg_rules[ch.text] = []
-                if(ch.tag == "right"):
-                    cfg_rules[left_text].append(ch.text)
-
-def derive(source, target):
-    return_arr = []
-    output = derive_helper(source, target, [])
-
-    if(output):
-        for element in output:
-            return_arr.append(''.join(element))
-         
-    if(len(return_arr) == 0):
+def derive_helper(start, end, visited):
+    if start in visited or len(start) > 1+len(end):
         return None
-    else:
-        return source + return_arr
 
-def derive_helper(source, target, visited):
-    temp_str = ''.join(source)
+    visited.append(start)
 
-    if temp_str in visited or len(source) > 1 + len(target):
-        return None
-    
-    visited.append(temp_str)
-
-    for char in source:
-        if char not in cfg_variables:
-            if ((char not in target) and (char != "")):
+    # match prefix terminals in start with prefix terminals in end
+    for char_s in start:
+        if char_s not in cfg.variables:
+            if (char_s not in end) and (char_s != ""):
                 return None
 
     variations = [[]]
 
-    for char in source:
-        if char in cfg_variables:
-            prods = cfg_rules[char]
+    for char in start:
+        if(char):
+            if char in cfg.variables:
+                rights = cfg.rules[char]
 
-            if prods == None:
-                variations = False
-            
-            new_variations = []
-            for variation in variations:
-                for right in prods:
-                    if (variation != None and right != None):
-                        if len(right) == 0:
-                            right = []
-                        new_variations.append(variation + list(right))
-            variations = new_variations
-        else:
-            for variation in variations:
-                variation.append(char)
-    
+                # Replace the var
+                new_variations = []
+                for variation in variations:
+                    for right in rights:
+                        #This is for epsilon case
+                        if(right != None and variation != None):
+                            if len(right) == 0:
+                                right = []
+                            new_variations.append(variation + right)
 
-    if target in variations:
-        return [target]
-    
+                variations = new_variations
+
+            else:
+                for variation in variations:
+                    variation.append(char)
+
+    if end in variations: return [end]
+
     for variation in variations:
-        ders = derive_helper(variation, target, visited)
+        ders = derive_helper(variation, end, visited)
 
         if ders != None:
             return [variation] + ders
-
     return None
 
+def parse(filename):
+    with open(filename, "r") as file:
+        data = ET.parse(file)
+        root = data.getroot()
 
-#########################################
-# main starts here
-file, source, target = sys.stdin.read().split("\n")[:-1]
+        start = None
+        varz = set()
+        terms = list()
+        rules = dict()
+
+        # go through rules
+        all_chars = set()
+
+        if(root.tag != "structure"):
+            tag_list = list(root.getchildren())
+            pos = 0
+            while True:
+                if(tag_list[pos].tag == "structure"):
+                    root = tag_list[pos]
+                    break
+                else:
+                    tag_list += list(root.getchildren())
+                pos += 1
+        
+        for rule in root.findall("./production"):
+            left = rule.find('left').text
+            right = rule.find('right').text
+
+            if start == None:
+                start = left
+
+            varz.add(left)
+            right_array = []
+
+            #if right is None, we represent "epsilon" within an empty array
+            if right != None:
+                for char in right:
+                    right_array.append(char)
+                    # keep track of all chars we see
+                    all_chars.add(char)
+
+            rights = rules.get(left)
+            if rights == None:
+                rights = []
+            rights.append(right_array)
+            rules[left] = rights
+
+        # get the set difference which is the terminals
+        terms = list((all_chars - varz))
+
+    return CFG(varz, terms, rules, start)
 
 
-parseCFG(file)
+data = sys.stdin.read()
 
-cfg_start = list(cfg_rules.keys())[0]
-     
-for i in cfg_rules:
-    if(i not in cfg_variables):
-        cfg_variables.append(i)
+file, source, target = str(data).split("\n")[:-1]
 
-for i in cfg_rules:
-    for x in cfg_rules[i]:
-        if(x):
-            for y in x:
-                if(y not in cfg_terminals) and (y not in cfg_variables):
-                    cfg_terminals.append(y)
+cfg = parse(file)
 
-thisCfg = CFG(cfg_terminals, cfg_variables, cfg_rules, cfg_start)
-# checks to see if the cfg was gotten correctly
-# print(cfg_variables)
-# print(cfg_terminals)
-# print(cfg_rules)
-# print(cfg_start)
+# print(cfg.vars)
+# print(cfg.terms)
+# print(cfg.rules)
+# print(cfg.start)
 
-derivisions = derive(list(source), list(target))
+ders = derive(source,target)
 
-if (derivisions == None):
+if ders == None:
     print()
 else:
-
-    final_derivisions = []
-
-    temp_str = ""
-    for i in derivisions:
-        if(len(i) == 1):
-            temp_str += i
-        else:
-            final_derivisions.append(i)
-    final_derivisions.append(temp_str)
-
-    for string in final_derivisions:
+    for string in ders:
         print(string)
