@@ -15,8 +15,7 @@ def PDAtoXML(pda):
     ET.SubElement(root, "type").text = "pda"
     automaton = ET.SubElement(root, "automaton")
     for state in range(0, len(pda.states) - 1):
-        print(state)
-        cur_state = ET.SubElement(automaton, "state", id=str(state), name="q" + str(state))
+        cur_state = ET.SubElement(automaton, "state", id=str(state), name=pda.states[state])
         if pda.states[state] == pda.start:
             ET.SubElement(cur_state, "initial")
         if pda.states[state] in pda.accepts:
@@ -24,22 +23,29 @@ def PDAtoXML(pda):
 
     for key in pda.transitions:
         right_side = pda.transitions[key]
-        print(right_side)
         transition = ET.SubElement(automaton, "transition")
         for list in right_side:
-            ET.SubElement(transition, "from").text = str(key)
-            ET.SubElement(transition, "to").text = str(list[0])
-            ET.SubElement(transition, "read").text = str(list[1])
+            ET.SubElement(transition, "from").text = str(key[0])
+            ET.SubElement(transition, "to").text = str(key[1])
+            ET.SubElement(transition, "read").text = str(list[0])
+            ET.SubElement(transition, "pop").text = str(list[1])
             ET.SubElement(transition, "push").text = str(list[2])
-            ET.SubElement(transition, "pop").text = str(list[3])
     
     tree = ET.ElementTree(root)
     tree.write(sys.stdout, encoding="unicode") 
 
-pdaw_states = ['q0', 'q1', 'q2']
+pdaw_states = ['q0', 'q1', 'q2', 'q3']
 pdaw_alphabet = ['[', ']', '(', ')']
-pdaw_stack_alphabet = ['[', ']', '(', ')']
-pdaw_transitions = {0: [[1, None, '$', None]], 1: [[1, '[', '[', None], [1, '(', '(', None], [1, ']', None, ']'], [1, ')', None, ')'], [2, None, None, "$"]]}
+pdaw_stack_alphabet = ['SS', ']', 'E', '(', '[', 'CD', 'D', 'F', 'AF', 'B', 'AB', 'A', ')', 'SD', '$', 'S', 'CE', 'C', 'SB']
+# structure (from, to): (read, pop, push)
+pdaw_transitions = {('q0', 'q3'): [('', '', '$')],
+                    ('q1', 'q1'): [('[', '[', ''), ('(', '(', ''), (']', ']', ''),
+                                    (')', ')', ''), ('', 'S', 'AB'), ('', 'S', 'CD'),
+                                    ('', 'S', 'SS'), ('', 'S', ''), ('', 'E', 'SD'),
+                                    ('', 'S', 'AF'), ('', 'C', '('), ('', 'D', ')'),
+                                    ('', 'A', '['), ('', 'B', ']')],
+                    ('q1', 'q2'): [('', '$', '')],
+                    ('q3', 'q1'): [('', '', '$')]}
 pdaw_start = 'q0'
 pdaw_accepts = 'q2'
 
