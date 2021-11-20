@@ -1,1 +1,38 @@
-placeholder
+Overall Algorithm:
+
+Data Types:
+In this program, there are the 2 classes (nsDFA and DFA) which represnent a non deterministic-start DFA and a DFA respectively. 
+In both of these classes, states is a list, alphabet is a list, the transitions are a list(which will hold lists), and accepts is a list.
+The main and really only difference in these 2 data types are that in a DFA, the start state is a string as there can only be one 
+start state, however, in the nsDFA, the start state is a list as there can be more than 1 start states and to accomadate for that
+start is a list instead of a string.  
+
+Overall Approach:
+The overall algorithm I took for solving this problem was to create a normal dfa with each start state from the 
+nsDFA and then union those dfas together to create an equivelent dfa to the original nsDFA. The reasoning behind this approach 
+being, that a nsDFA accepts if from any of its start states it reaches an accept state. And so, by creating dfas 
+based on all possible start states from the nsDFA, I cover with subsets of the language, all possible strings in the language. 
+Therefore, if nsDFA would accept the string, then at least one of the dfas I created using the start states would accept the string,
+and vice versa in the sense that if the nsDFA would not accept the string, then none of the dfas created would accept the string
+because if one did this would be a counter proof to the nsDFA not accepting on the given string. Now knowing that if the nsDFA 
+accepts the string then at least one of the dfas accepts as well, I unioned together all of the dfas until I only had 1 dfa left.
+This final dfa which is the result of all the start state dfas unioned together will accept the same language as the nsDFA for the
+reasoning stated eariler about if the nsDFA accepts, then at least one dfa accepts because now as the union of all those DFAs, 
+this final DFA will also accept. 
+
+specific subroutines implemented:
+within nsDFAtoDFA is where the logic of the algorithm comes into play. parsensDFA and DFAtoXML are functions that simply carry out
+a modified DFA parse and printing the DFA produced. Within nsDFAtoDFA, there the a subroutine of creating the list of DFAs from the 
+start staes of the nsDFA. This subroutine works by iterating through the nsDFA start states and then creating a new instance of a DFA
+with the same attributes as the nsDFA except for the start stae being the current start state we are seeing instead of a list of start
+states. These DFAs are then appended to DFAtoUnion to be used in the next subroutine. The next subroutine which is the while block in 
+nsDFAtoDFA carries out the unioning of the DFAtoUnion array. what this subroutine does is call unionDFA on the first 2 values of 
+the DFAtoUnion array to create the union of those 2 dfas and then stores the return value of that, which is the unioned dfa,
+to the end of the array so that the while loop condition will work properly and the unioning will continue until there is only 1 DFA 
+left, the final completely unioned DFA. This DFA is then returned for printing.
+
+preconditions/invariantes: 
+Some preconditions that I rely on are that the nsDFA provided to the program is a valid nsDFA, there are no checks to ensure this that 
+are done within the program. I also assume that prior to trying to print the DFA in DFAtoXML, a DFA has been created by the nsDFAtoDFA
+function. While maybe obvious, I rely on my unionDFA function working properly in order to correctly produce the DFA equivelent of the 
+nsDFA. 
