@@ -89,11 +89,11 @@ def cfg2xml(cfg):
     
 
 
-def moreNullTransitions(rules):
+def moreNullTransitions(rules, start):
     for var in rules:
         RHS = rules[var]
         for productions in RHS:
-            if(len(productions) == 0):
+            if(len(productions) == 0) and var != start:
                 return True
     return False
 
@@ -134,49 +134,62 @@ def CFGtoCNF(cfg):
     # print(start)
     # print(rules)
 
-    # get rid of transitions to self here ? ie grammar 4 F -> F 
-    while(moreNullTransitions(rules)):
-        # print(rules)
-        # find a null transition
-        toRemove = None
-        for var in rules:
-            RHS = rules[var]
-            for productions in RHS:
-                if(len(productions) == 0):
-                    toRemove = var
-        # remove that transition
-        rules[toRemove].remove([])
-        # add transitions to where that variable is used in the other productions
-        for var in rules:
-            RHS = rules[var]
-            for productions in RHS:  
-                total = sum(s.count(toRemove) for s in productions)
-                if (total == 1):
-                    temp_replace = []
-                    for char in productions:
-                        if(char != toRemove):
-                            temp_replace.append(char)
-                    temp_list = rules[var]
-                    if(temp_replace not in temp_list):
-                        temp_list.append(temp_replace)
-                    rules[var] = temp_list
-                if(total == 2):
-                    temp_list = rules[var]
-                    temp_prod1 = []
-                    temp_prod2 = []
-                    for char in productions:
-                        temp_prod1.append(char)
-                        temp_prod2.append(char)
+    for var in cfg.rules:
+        RHS = cfg.rules[var]
+        for production in RHS:
+            if(len(production) == 1) and production[0] == var:
+                cfg.rules[var].remove(production)
 
-                    temp_prod1.remove(toRemove)
-                    temp_list.append(temp_prod1)
+    # print(vars)
+    # print(terms)
+    # print(start)
+    # print(rules)
+     
+    # get rid of transitions to self here ? ie grammar 4 F -> F 
+    # while(moreNullTransitions(rules, cfg.start)):
+    #     # print(rules)
+    #     # find a null transition
+    #     toRemove = None
+    #     for var in rules:
+    #         RHS = rules[var]
+    #         for productions in RHS:
+    #             if(len(productions) == 0):
+    #                 toRemove = var
+    #     # remove that transition
+    #     print(toRemove)
+    #     rules[toRemove].remove([])
+    #     # add transitions to where that variable is used in the other productions
+    #     for var in rules:
+    #         print(rules)
+    #         RHS = rules[var]
+    #         for productions in RHS:  
+    #             total = sum(s.count(toRemove) for s in productions)
+    #             if (total == 1):
+    #                 temp_replace = []
+    #                 for char in productions:
+    #                     if(char != toRemove):
+    #                         temp_replace.append(char)
+    #                 temp_list = rules[var]
+    #                 if(temp_replace not in temp_list):
+    #                     temp_list.append(temp_replace)
+    #                 rules[var] = temp_list
+    #             if(total == 2):
+    #                 temp_list = rules[var]
+    #                 temp_prod1 = []
+    #                 temp_prod2 = []
+    #                 for char in productions:
+    #                     temp_prod1.append(char)
+    #                     temp_prod2.append(char)
+
+    #                 temp_prod1.remove(toRemove)
+    #                 temp_list.append(temp_prod1)
                     
-                    temp_prod2.reverse()
-                    temp_prod2.remove(toRemove)
-                    temp_prod2.reverse()
-                    temp_list.append(temp_prod2)
+    #                 temp_prod2.reverse()
+    #                 temp_prod2.remove(toRemove)
+    #                 temp_prod2.reverse()
+    #                 temp_list.append(temp_prod2)
                     
-                    rules[var] = temp_list
+    #                 rules[var] = temp_list
                 
                       
     return CFG(vars, terms, rules, start)
