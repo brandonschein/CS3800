@@ -13,17 +13,16 @@ def parse(filename):
     root = tree.getroot()
 
     start = ""
-    varz = set()
-    terminals = list()
+    variables = set()
+    terminals = set()
     rules = dict()
 
-    # go through rules
-    all_chars = set()
+    chars_in_rules = set()
     for rule in root.findall("./structure/production") + root.findall("./production"):
         left = rule.find('left').text
         right = rule.find('right').text
 
-        varz.add(left)
+        variables.add(left)
         right_array = []
 
         if start == "":
@@ -33,8 +32,7 @@ def parse(filename):
         if right != None:
             for char in right:
                 right_array.append(char)
-                # keep track of all chars we see
-                all_chars.add(char)
+                chars_in_rules.add(char)
 
         rights = rules.get(left)
         if rights == None:
@@ -43,9 +41,9 @@ def parse(filename):
         rules[left] = rights
 
     # get the set difference which is the terminals
-    terminals = list((all_chars - varz))
+    terminals = list((chars_in_rules - variables))
 
-    return CFG(list(varz), terminals, rules, start)
+    return CFG(list(variables), list(terminals), rules, start)
 
 def cfg2xml(cfg):
     top = ET.Element('structure')
@@ -55,35 +53,27 @@ def cfg2xml(cfg):
     rights = cfg.rules[cfg.start]
     if rights != None:
         for right_list in rights:
-            right_str = ''
-            for right in right_list:
-                right_str += right
+            temp_str = ''
+            for r in right_list:
+                temp_str += r
 
             transition_elm = ET.SubElement(top, "production")
-
-            left_elm = ET.SubElement(transition_elm, "left")
-            left_elm.text = cfg.start
-
-            right_elm = ET.SubElement(transition_elm, "right")
-            right_elm.text = right_str
+            ET.SubElement(transition_elm, "left").text = cfg.start
+            ET.SubElement(transition_elm, "right").text = temp_str
 
     for var in cfg.variables:
         if var != cfg.start:
             rights = cfg.rules[var]
             if rights != None:
                 for right_list in rights:
-                    right_str = ''
-                    for right in right_list:
-                        right_str += right
+                    temp_str = ''
+                    for r in right_list:
+                        temp_str += r
 
                     transition_elm = ET.SubElement(top, "production")
+                    ET.SubElement(transition_elm, "left").text = var
+                    ET.SubElement(transition_elm, "right").text = temp_str
 
-                    left_elm = ET.SubElement(transition_elm, "left")
-                    left_elm.text = var
-
-                    right_elm = ET.SubElement(transition_elm, "right")
-                    right_elm.text = right_str
-    
     tree = ET.ElementTree(top)
     tree.write(sys.stdout, encoding="unicode")
     
