@@ -2,10 +2,15 @@ Overall Algorithm:
 
 Data Types:
 In this program, there are the 2 classes (nsDFA and DFA) which represnent a non deterministic-start DFA and a DFA respectively. 
-In both of these classes, states is a list, alphabet is a list, the transitions are a list(which will hold lists), and accepts is a list.
+In both of these classes, states is an array, alphabet is an array, the transitions are a array(which will hold arrays), and accepts is an array.
 The main and really only difference in these 2 data types are that in a DFA, the start state is a string as there can only be one 
 start state, however, in the nsDFA, the start state is a list as there can be more than 1 start states and to accomadate for that
-start is a list instead of a string.  
+start is a list instead of a string. While both the states and alphabets are lists from a programatic standpoint, they function as sets,
+where no states or alphabet character can repeat as this would not make sense from a literal standpoint and would also cause issues when implementing
+in code. Transitions are an array of arrays of size 3 as the transition array holds arrays that describes transitions for their respective finite 
+automata classes, where an array describing a transition looks like [from, read, to]. Start is a string in DFA because there can only be one and so we 
+describe it using its singular state name, however in nsDFA start is a list because we have been told to assume a nsDFA can have one or more start states
+so to accomadate we append all start states to an array and use that array later on to solve the problem. 
 
 Overall Approach:
 The overall algorithm I took for solving this problem was to create a normal dfa with each start state from the 
@@ -21,7 +26,8 @@ reasoning stated eariler about if the nsDFA accepts, then at least one dfa accep
 this final DFA will also accept. 
 
 specific subroutines implemented:
-within nsDFAtoDFA is where the logic of the algorithm comes into play. parsensDFA and DFAtoXML are functions that simply carry out
+within nsDFAtoDFA is where the logic of the algorithm comes into play. parsensDFA and DFAtoXML are functions from previous homeworks
+(slightly modified parseDFA to get parsensDFA) that simply carry out
 a modified DFA parse and printing the DFA produced. Within nsDFAtoDFA, there the a subroutine of creating the list of DFAs from the 
 start staes of the nsDFA. This subroutine works by iterating through the nsDFA start states and then creating a new instance of a DFA
 with the same attributes as the nsDFA except for the start stae being the current start state we are seeing instead of a list of start
@@ -29,7 +35,10 @@ states. These DFAs are then appended to DFAtoUnion to be used in the next subrou
 nsDFAtoDFA carries out the unioning of the DFAtoUnion array. what this subroutine does is call unionDFA on the first 2 values of 
 the DFAtoUnion array to create the union of those 2 dfas and then stores the return value of that, which is the unioned dfa,
 to the end of the array so that the while loop condition will work properly and the unioning will continue until there is only 1 DFA 
-left, the final completely unioned DFA. This DFA is then returned for printing.
+left, the final completely unioned DFA. UnionDFA is from a previous homework, but it takes in 2 dfas and gos about creating a new DFA 
+that holds new values for its variables that are created to represent the union of the two given dfas. This function calls get_transition 
+as a helper function in which get_transition simply returns the transition between 2 given states from the transitionlist it is given. 
+This unioned DFA is then returned for printing.
 
 preconditions/invariantes: 
 Some preconditions that I rely on are that the nsDFA provided to the program is a valid nsDFA, there are no checks to ensure this that 
