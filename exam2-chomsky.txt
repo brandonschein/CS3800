@@ -1,1 +1,33 @@
-placeholder
+Overall algorithm: 
+
+data types:
+In this program, there is the data type of CFG that is created to represent context
+free grammars. An instance of the CFG class has a list variables that hold the variables of the 
+CFG, a list terminals which holds all of the terminals, or non substituable characters, 
+of the CFG, a dictionary for the rules (aka productions) of the CFG, where the key's are variables
+and the values are an array of lists where each list is the right hand side of a subsitution from the left
+hand side variable that is the key value. (ie A: [('a'), ('a', b')]). and finally start which is a string value
+that will be a variable that is the starting point of the CFG. While variables and terminals are regarded programatically
+as lists, in acutality they are treated like sets, where there can be no repeats. Rules are made into a dictionary for the 
+sake of easy and organized access to the productions from any given variable and so that it is easy to keep track of the state
+of productions for the CFG while iterating through for null transitions
+
+Overall approach/preconditions/subroutines:
+My approach is to start by parsing out what I would call simple epsilon transitions. Simple epsilon transitions are ones that have only the 
+variable to epsilon transition and removing the epsilon transition means removing the variable from the CFG variables as well as from all
+occurances of the variable in the right hand side of any production. To do this in my program I create a toRemove array and append the variables
+that meet the criteria of a simple removal (have only the epsilon transition) while also deleting the variables from the variables list. Then if 
+toRemove has anything in it, we go through removing any instance of the variable in the productions. finally, we remove the variable as a key from the 
+dictionary to completely remove all trace of it, concluding the simple null transition removal. Once that has been done, I would attempt to continueously 
+iterate through the rules dictionary, removing epsilon transitions and adding the transitions needed to account for this, continuing until either there are no 
+epsilon transitions left or until the only epsilon transition is the transition of the start variable to epsilon. In order to do this, I created the moreNullTransitions
+function that returns whether there are more epsilon transitions in our rules set that are not an epsilon transition from the start state or not. The output of this function
+serves as the while loop condition. Within the while loop it is assumed as a precondition that there are no simple null transitions. In the while loop we first start by searching 
+for an epsilon transition to remove. Once we have found one, we remove that transition from the rules list and prepare to add the cretaed transitions from this removal. To add the created
+transitions, we check each right hand side of the productions to see if it contains the variable we are removing the epsilon transition for currently. Note that
+as a way to simplify the probelm a bit, the program assumes that the variable we are removing only appears at most 2 times which is in line with the test grammars provided. 
+creating the new productions is done by creating deep copies of the existing productions and modifying those copies to be added onto the existing prdouctions. This is done because
+if shallow copies were made and modified, productions would be lost messing up the entire grammar. This process is completed many times because as we delete epsilon transitions, we
+sometimes add in new epsilon transitions and so the process must continue until we reach a point that abides by the chomsky normal form step of deleting the epsilon transitions, which
+basically means having no epsilon transitions or the only epsilon transition being from the start state. Once this has finished interating through we return the new CFG with its updated arguements 
+that make up its rules variables terminals and start state and print this out.
