@@ -2,9 +2,9 @@ import sys
 import xml.etree.cElementTree as ET
 
 class CFG:
-    def __init__(self, variables, terms, rules, start):
+    def __init__(self, variables, terminals, rules, start):
         self.variables = variables
-        self.terms = terms
+        self.terminals = terminals
         self.rules = rules
         self.start = start
 
@@ -14,7 +14,7 @@ def parse(filename):
 
     start = ""
     varz = set()
-    terms = list()
+    terminals = list()
     rules = dict()
 
     # go through rules
@@ -43,9 +43,9 @@ def parse(filename):
         rules[left] = rights
 
     # get the set difference which is the terminals
-    terms = list((all_chars - varz))
+    terminals = list((all_chars - varz))
 
-    return CFG(list(varz), terms, rules, start)
+    return CFG(list(varz), terminals, rules, start)
 
 def cfg2xml(cfg):
     top = ET.Element('structure')
@@ -99,7 +99,7 @@ def moreNullTransitions(rules, start):
 
 def CFGtoCNF(cfg):
     vars = cfg.variables
-    terms = cfg.terms
+    terminals = cfg.terminals
     start = cfg.start # we are told making the new start case is already done so keep this
     rules = cfg.rules
 
@@ -130,7 +130,7 @@ def CFGtoCNF(cfg):
             rules.pop(key)
 
     # print(vars)
-    # print(terms)
+    # print(terminals)
     # print(start)
     # print(rules)
 
@@ -141,11 +141,11 @@ def CFGtoCNF(cfg):
                 cfg.rules[var].remove(production)
 
     # print(vars)
-    # print(terms)
+    # print(terminals)
     # print(start)
     # print(rules)
      
-    # get rid of transitions to self here ? ie grammar 4 F -> F 
+    # works for grammar5 but gets stuck in grammar4 
     # while(moreNullTransitions(rules, cfg.start)):
     #     # print(rules)
     #     # find a null transition
@@ -156,11 +156,11 @@ def CFGtoCNF(cfg):
     #             if(len(productions) == 0):
     #                 toRemove = var
     #     # remove that transition
-    #     print(toRemove)
+    #     # print(toRemove)
     #     rules[toRemove].remove([])
     #     # add transitions to where that variable is used in the other productions
     #     for var in rules:
-    #         print(rules)
+    #         #print(rules)
     #         RHS = rules[var]
     #         for productions in RHS:  
     #             total = sum(s.count(toRemove) for s in productions)
@@ -190,9 +190,8 @@ def CFGtoCNF(cfg):
     #                 temp_list.append(temp_prod2)
                     
     #                 rules[var] = temp_list
-                
-                      
-    return CFG(vars, terms, rules, start)
+                               
+    return CFG(vars, terminals, rules, start)
 
 
 
@@ -207,14 +206,14 @@ thiscfg = parse(file)
 # print(thiscfg.start) #str
 # print(thiscfg.rules) # dict
 # print(thiscfg.variables) # list
-# print(thiscfg.terms) # list
+# print(thiscfg.terminals) # list
 
 #convert to CNF here
 newCNF = CFGtoCNF(thiscfg)
 
 # print(newCNF.rules)
 # print(newCNF.start)
-# print(newCNF.terms)
+# print(newCNF.terminals)
 # print(newCNF.variables)
 
 cfg2xml(newCNF)
