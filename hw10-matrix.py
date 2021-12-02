@@ -64,16 +64,16 @@ def calculate_result():
 input_arr = sys.stdin.read().split("\n ")
 input_arr[len(input_arr) - 1] = input_arr[len(input_arr) - 1].split("\n")[0]
 
-print(input_arr)
+#print(input_arr)
 
 make_matricies(input_arr)
-print(X)
-print(Y)
-print(Z)
-print(result)
+#print(X)
+#print(Y)
+#print(Z)
+#print(result)
 
 calculate_result()
-print(result)
+#print(result)
 
 if(result == Z):
     print(1)
