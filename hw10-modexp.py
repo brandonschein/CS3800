@@ -24,7 +24,7 @@ p = int(p)
 
 square = calculate_square(a, b)
 
-if(square % p == c):
+if(square % p == c % p):
     print(1)
 else:
     print(0)
