@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys 
 
 def calculate_square(a, b):
