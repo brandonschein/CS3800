@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # # Program to multiply two matrices using nested loops
 
 # # 3x3 matrix
