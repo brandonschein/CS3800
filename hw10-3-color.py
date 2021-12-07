@@ -22,6 +22,7 @@ def checkvalid():
                 temp_seen.add(graph[int(e[1])])
                 if(prev_length == len(temp_seen)):
                     return False
+    return True
         
 
 ###################
@@ -45,3 +46,4 @@ if(checkvalid()):
     print(1)
 else:
     print(0)
+
