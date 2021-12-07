@@ -45,9 +45,9 @@ populate_graph(input_arr[len(input_arr) - 1].split())
 
 
 if(checkvalid()):
-    print(1)
-else:
     print(0)
+else:
+    print(1)
 
 # import sys 
 
