@@ -32,7 +32,7 @@ input_arr[len(input_arr) - 1] = input_arr[len(input_arr) - 1].split("\n")[0]
 
 #print(input_arr)
 
-n, m = input_arr[0].split(" ")
+n, m = input_arr[0].split()
 n = int(n)
 m = int(m)
 
