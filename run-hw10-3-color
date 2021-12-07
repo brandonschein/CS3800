@@ -26,7 +26,7 @@ def checkvalid():
         
 
 ###################
-input_arr = sys.stdin.read().split("\n ")
+input_arr = sys.stdin.read().split("\n")
 
 input_arr[len(input_arr) - 1] = input_arr[len(input_arr) - 1].split("\n")[0]
 
