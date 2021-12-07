@@ -1,14 +1,30 @@
 Run time analysis: 
 Problem 2:
+    This program has 3 for loops in order to calculate the output of multiplying matricies X and Y. 
+    - The first for loop runs n times as it traverses the rows of X 
+    = The second for loop runs k times as it traverses the columns of Y
+    - The third for loop runs m times as it traverses the rows of Y (and technically X)
+    - The adding, multiplying, and lookups done within the third for loop is done in constant time.
+    Overall, the runtime for this program is O(nmk) which is polynomial to the input. 
 
 Problem 3:
+    This program is recursive with each recursive iteration taking a constant time in order to producde. 
+    In each iteration other than the base cases, b, the exponenet we are rasing a too, is being halfed each time. 
+    Because b is the value that is used to determine what if case we fall into, this can only run at most log(b) times.
+    The squared value and c are then modulused by p and compared to see if they are equal. This takes constant time. 
+    Therefore the overall runtime for this program is O(log(b)) which is polynomial to the input. 
 
 Problem 4:
+    This program has 2 for loops in order to verify if a given graph coloring is valid. 
+    - The first for loop runs n times as it iterates through the nodes in the graph
+    - The second for loop runs m times as it searches through the edges
+    Overall, the runtime for the program is O(nm) which is polynomial to the input. 
 
 
-Time spent: 
+Time spent: 12 hours 
 
 Resources
+- Sipser's textbook
+- Lecture slides/notes 
 - https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 - https://www.programiz.com/python-programming/examples/multiply-matrix
-- 
