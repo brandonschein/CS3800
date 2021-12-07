@@ -32,10 +32,10 @@ n = int(n)
 m = int(m)
 
 populate_edges(m, input_arr)
-print(edges)
+#print(edges)
 
 populate_graph(input_arr[len(input_arr) - 1].split())
-print(graph)
+#print(graph)
 
 if(checkvalid()):
     print(1)
