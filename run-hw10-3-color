@@ -25,8 +25,8 @@ def checkvalid():
 ###################
 input_arr = sys.stdin.read().split("\n")
 if (input_arr[len(input_arr) - 1] == ""):
-    input_arr.pop(input_arr[len(input_arr) - 1])
-    
+    input_arr.pop(len(input_arr) - 1)
+
 input_arr[len(input_arr) - 1] = input_arr[len(input_arr) - 1].split("\n")[0]
 
 n, m = input_arr[0].split()
@@ -44,17 +44,3 @@ if(checkvalid()):
 else:
     print(0)
 
-
-# def checkvalid():
-#     for node in graph:
-#         temp_seen = set()
-#         temp_seen.add(graph[node])
-#         for e in edges:
-#             if(int(e[0]) == node):
-#                 if(graph[int(e[1])] == graph[node]):
-#                     return False
-#                 # prev_length = len(temp_seen)
-#                 # temp_seen.add(graph[int(e[1])])
-#                 # if(prev_length == len(temp_seen)):
-#                 #     return False
-#     return True
