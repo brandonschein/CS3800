@@ -1,0 +1,13 @@
+The first and foremost most important thing in this problem is recognizing the difference between an Euler Path and an Euler circuit. Euler paths are undirected graphs with a path through every edge.
+Euler Circuits are the same thing except the starting and ending vertex are the same.  
+
+Reduction from EULPATHCOMP to EULCIRCUITCOMP:
+
+
+
+Reduction from EULCIRCUITCOMP to EULPATHCOMP:
+Based on the above definition of Euler Paths and Circuits, all Euler Circuits are a subset of Euler paths, since
+all of them go through all the edges. The starting and end points are the same each time. Based on the definition of 
+EULPATHCOMP, G is a complete undreicted graph through every edge withs starting point s and ending point t. Based on the
+euler circuit definition, if s and t are both set as equal, then the Euler circuit will have been successfully reduced to 
+an euler path.
