@@ -1,0 +1,17 @@
+The first and foremost most important thing in this problem is recognizing the difference between a Hamiltonian Path and a Hamiltonian circuit. Hamiltonian paths are undirected graphs with a path through every vertex.
+Hamiltonian Circuits are the same thing except the starting and ending vertex are the same.  
+
+Reduction from UNDIRHAMPATH to UNDIRHAMPCIRCUIT:
+Based on the above definition, a Hamiltonian circuit needs to cover all edges on a graph, and then start and end at the same vertex. 
+For that to happen, an edge must be added between the starting and ending points of the Eulerian path to form a circuit, so that once the 
+path has reached the end vertex, it can use this extra edge to go back to the starting vertex. This solution is the same as the one for converting
+a Eulerian path to Eulerian circuit, because though the definitions are different, both Hamiltonian and Eulerian circuits require
+the starting and ending vertex to be the same.
+
+
+Reduction from UNDIRHAMPCIRCUIT to UNDIRHAMPCIRCUIT:
+Based on the above definition of Hamiltonian Paths and Circuits, all Hamiltonian Circuits are a subset of Hamiltonian paths, since
+all of them go through all the vertices. The starting and end points are the same each time. Based on the definition of 
+UNDIRHAMPCIRCUIT, G is a complete undreicted graph through every vertex. Based on the Hamiltonian circuit definition, if the starting
+and ending vertex are both set to the same value, then the Hamiltonian circuit will have been successfully reduced to 
+a Hamiltonian path.
