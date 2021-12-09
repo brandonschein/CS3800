@@ -13,3 +13,7 @@ all of them go through all the edges. The starting and end points are the same e
 EULPATHCOMP, G is a complete undreicted graph through every edge withs starting point s and ending point t. Based on the
 euler circuit definition, if s and t are both set as equal, then the Euler circuit will have been successfully reduced to 
 an euler path. 
+
+if not eularion, and function is run, then it results in outside the language
+constant time less than polynomial 
+reduction has to work in all words in sigma star, if not in there, map to "not encoding" with some polynomial time reduction (notPAIR example --> notGraph) 
