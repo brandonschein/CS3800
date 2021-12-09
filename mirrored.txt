@@ -1,0 +1,3 @@
+find a undecidable langauge to polytime reduce to the M language given
+Make some pseudocode like 5.24
+Because the language we are reducing from is undecidable and our reduction can be done in polynomial time, we know that the language we were given M is undecidable. 
