@@ -6,7 +6,8 @@ Based on the above definition, a Hamiltonian circuit needs to cover all edges on
 For that to happen, an edge must be added between the starting and ending points of the Eulerian path to form a circuit, so that once the 
 path has reached the end vertex, it can use this extra edge to go back to the starting vertex. This solution is the same as the one for converting
 a Eulerian path to Eulerian circuit, because though the definitions are different, both Hamiltonian and Eulerian circuits require
-the starting and ending vertex to be the same. The adding of an edge between the starting and ending vertex takes constant or O(1) time, which is less than polynomial time. If the path is not hamiltonian, and an edge is added between the starting and ending vertex, a non hamiltonian circuit will be created, which is the expected behavior. If the input given is not valid, 
+the starting and ending vertex to be the same. The adding of an edge between the starting and ending vertex takes constant or O(1) time, which is less than polynomial time. If the path is not hamiltonian, and an edge is added between the starting and ending vertex, a non hamiltonian circuit will be created, which is the expected behavior. If the input given is not valid, then there is some polynomial reduction to notGRAPH where notGRAPH is a string that exists in Σ* which
+is used to describe inputs to the reduction function that are not valid.
 
 
 Reduction from UNDIRHAMPCIRCUIT to UNDIRHAMPCIRCUIT:
@@ -21,3 +22,5 @@ a Hamiltonian path.
 if not eularion, and function is run, then it results in outside the language
 constant time less than polynomial 
 reduction has to work in all words in sigma star, if not in there, map to "not encoding" with some polynomial time reduction (notPAIR example --> notGraph) 
+
+If the "word" (in this case expected to be a graph) given is outside of Σ*, then there is some polynomial reduction to notGRAPH where notGRAPH is a string that exists in Σ* which is used to describe inputs to the reduction function that are not valid. 
