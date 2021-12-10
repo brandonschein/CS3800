@@ -4,16 +4,11 @@ Euler Circuits are the same thing except the starting and ending vertex are the 
 Reduction from EULPATHCOMP to EULCIRCUITCOMP:
 Based on the above definition, an Euler circuit needs to cover all edges on a graph, and then start and end at the same point. 
 For that to happen from a Eulerian path, an edge must be added between the starting and ending points of the Eulerian path to form a circuit, so that once the 
-path has reached the end vertex, it can use this extra edge to go back to the starting vertex.
+path has reached the end vertex, it can use this extra edge to go back to the starting vertex. The adding of this edge takes constant time, or O(1), which is less than polynomial time and so therefore this reduction can be done in polynomial time. If the Eulerian path that has been made into a Eulerian Circuit is not a valid circuit, then the result would be mapping a path outside the function to a circuit outside the function, which is the expected behaviour. If the "word" (in this case expected to be a graph) given is outside of Σ* then there is some polynomial reduction to notGRAPH where notGRAPH is a string that exists in Σ* that describes inputs to the reduction function that are not valid. 
 
 
 Reduction from EULCIRCUITCOMP to EULPATHCOMP:
-Based on the above definition of Euler Paths and Circuits, all Euler Circuits are a subset of Euler paths, since
-all of them go through all the edges. The starting and end points are the same each time. Based on the definition of 
+Based on the above definition of Euler Paths and Circuits, an Euler Path needs to cover all edges on a graph, but end at different points. 
+An Eularian circuit goes through all the edges, however, the starting and end points are the same each time. Based on the definition of 
 EULPATHCOMP, G is a complete undreicted graph through every edge withs starting point s and ending point t. Based on the
-euler circuit definition, if s and t are both set as equal, then the Euler circuit will have been successfully reduced to 
-an euler path. 
-
-if not eularion, and function is run, then it results in outside the language
-constant time less than polynomial 
-reduction has to work in all words in sigma star, if not in there, map to "not encoding" with some polynomial time reduction (notPAIR example --> notGraph) 
+euler circuit definition, unconnecting s and t, or in other words removing the edge between s and t, would create an Eulerian path. Removing the edge between s and t takes constant or O(1) time, which is less than polynomial time. If the circuit was not Eularian, reducing it in the way described would create a non Eularian path, which is the expected behavior. If the "word" (in this case expected to be a graph) given is outside of Σ*, then there is some polynomial reduction to notGRAPH where notGRAPH is a string that exists in Σ* which is used to describe inputs to the reduction functoin that are not valid. 
