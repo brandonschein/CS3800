@@ -10,17 +10,8 @@ the starting and ending vertex to be the same. The adding of an edge between the
 is used to describe inputs to the reduction function that are not valid.
 
 
-Reduction from UNDIRHAMPCIRCUIT to UNDIRHAMPCIRCUIT:
-Based on the above definition of Hamiltonian Paths and Circuits, all Hamiltonian Circuits are a subset of Hamiltonian paths, since
-all of them go through all the vertices. The starting and end points are the same each time. Based on the definition of 
-UNDIRHAMPCIRCUIT, G is a complete undreicted graph through every vertex. Based on the Hamiltonian circuit definition, if the starting
-and ending vertex are both set to the same value, then the Hamiltonian circuit will have been successfully reduced to 
-a Hamiltonian path.
-
-
-
-if not eularion, and function is run, then it results in outside the language
-constant time less than polynomial 
-reduction has to work in all words in sigma star, if not in there, map to "not encoding" with some polynomial time reduction (notPAIR example --> notGraph) 
-
-If the "word" (in this case expected to be a graph) given is outside of Σ*, then there is some polynomial reduction to notGRAPH where notGRAPH is a string that exists in Σ* which is used to describe inputs to the reduction function that are not valid. 
+Reduction from UNDIRHAMPCIRCUIT to UNDIRHAMPATH:
+Based on the above definition of Hamiltonian Paths and Circuits, a path is a path that touches each vertex in a graph once, and hence ends on different nodes. A Hamiltonian Circuit is a path that also visits each node once, however, the starting and ending nodes are the same node. In order to reduce a Hamiltonian circuit to 
+a Hamiltonian path, the removal of the edge of the last node seen before reaching the starting node again is necessary. Removal of this edge would take constant or 
+O(1) time, which is less than polynomial time. Therefore, there is a polynomial reduction between Hamiltonian circuits and paths. If the circuit being reduced was not a hamiltonian circuit, the result would be a non-hamiltonian path, which is the desired outcome. If the input given to the function was not a part of Σ*, then 
+there is some polynomial reduction notGRAPH that exists in Σ* where notGRAPH is a string used to describe inputs to the reduction function that are not valid. 
