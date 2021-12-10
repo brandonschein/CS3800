@@ -1,11 +1,11 @@
-find a undecidable langauge to polytime reduce to the M language given
-Make some pseudocode like 5.24
-Because the language we are reducing from is undecidable and our reduction can be done in polynomial time, we know that the language we were given M is undecidable.
-
-Approaching this problem:
-Find an undeciable language that can be polytime reduced to R. Once you have shown that an undecidable langauge can be reduced in polynomial time to the language described by R, then we know that the language R is undecidable. 
+Using A_tm, an undecidable language we can polytime reduce this to R. Once we have shown that this undecidable language can be reduced, in polynomial time, to the language described by R, then we know that language R is also undecidable. And so by using mapping reducability, we will have arrived at the conlusion that R is undecidable. 
 
 Proving the reduction:
 For a machine F,
-
-F = "
+F = "On input <M, w>:
+    1. Construct machine M'.
+    M' = "on input x
+        1. Run M on the reverse of x
+        2. If M accepts, accept
+        3. If M rejects, enter a loop."
+    2. Output <M', w>"
